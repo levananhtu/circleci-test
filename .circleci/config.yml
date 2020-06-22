@@ -16,7 +16,7 @@ jobs:
       - checkout
       - run: echo "A more famillar hi"
       - run: sleep 15
-workflow:
+workflows:
   version: 2
   one_and_two:
     - jobs:
