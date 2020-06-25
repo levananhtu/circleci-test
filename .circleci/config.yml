@@ -6,43 +6,29 @@ jobs:
     docker:
       - image: circleci/openjdk:11.0.3-jdk-stretch-node-browsers-legacy
     steps:
-      - run:
-          - name: Checkout
-          - command: checkout
-      - run:
-          - name: print some message
-          - command: echo "A first hello"
-      - run:
-          - name: print current working directory
-          - command: pwd
-      - run:
-          - name: create lvat01 dir
-          - command: mkdir lvat01
-      - run:
-          - name: sleep for 25 seconds
-          - command: sleep 25
+      - checkout
+      - run: echo "A first hello"
+      - run: mkdir my_workspace
+      - run: java -version
+      - run: echo "Trying out workspaces" > my_workspace/echo-output
+      - persist_to_workspace:
+          root: my_workspace
+          paths:
+            - echo-output
   two:
     docker:
       - image: circleci/openjdk:11.0.3-jdk-stretch-node-browsers-legacy
     steps:
-      - run:
-          - name: Checkout
-          - command: checkout
-      - run:
-          - name: print some message
-          - command: echo "A more famillar hi"
-      - run:
-          - name: create lvat02 dir
-          - command: mkdir lvat02
-      - run:
-          - name: list all directory and file
-          - command: ls -al
-      - run:
-          - name: print current working directory
-          - command: pwd
-      - run:
-          - name: sleep for 15 seconds
-          - command: sleep 15
+      - checkout
+      - run: echo "A more familiar hi"
+      - attach_workspace:
+          at: my_workspace
+      - run: |
+          if [[ $(cat my_workspace/echo-output) == "Trying out workspaces" ]]; then
+            echo "It worked!";
+          else
+            echo "Nope!"; exit 1
+          fi
 workflows:
   version: 2
   one_and_two:
