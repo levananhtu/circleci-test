@@ -26,7 +26,7 @@ jobs:
       - run: echo "A more familiar hi"
       - attach_workspace:
           at: .
-      - run: echo "$(cat project/application.properties)!";
+      - run: echo "$(cat ~/project/application.properties)!";
 workflows:
   version: 2
   one_and_two:
