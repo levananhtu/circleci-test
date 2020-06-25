@@ -18,7 +18,8 @@ jobs:
     steps:
       - run:
           - name: print env variable
-          - command: env
+          - command: |
+              echo 123546
 workflows:
   version: 2
   setup:
