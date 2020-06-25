@@ -2,38 +2,16 @@
 version: 2
 # Use a package of configuration called an orb.
 jobs:
-  one:
+  setup:
     docker:
-      - image: circleci/openjdk:11.0.3-jdk-stretch-node-browsers-legacy
-    steps:
-      - checkout
-      - run: echo "A first hello"
-      - run: java -version
-      - run: |
-          sed -i 's/PROTEST_APP_NAME/CIRCLECI_TEST/g' ~/project/src/main/resources/application.properties
-          sed -i 's/PROTEST_APP_OWNER_NAME/LEVANANHTU/g' ~/project/src/main/resources/application.properties
-          sed -i 's/PROTEST_APP_OWNER_AGE/22/g' ~/project/src/main/resources/application.properties
-          sed -i 's/PROTEST_APP_OWNER_CODENAME/LVAT/g' ~/project/src/main/resources/application.properties
-      - persist_to_workspace:
-          root: .
-          paths:
-            - .
-  two:
-    docker:
-      - image: circleci/openjdk:11.0.3-jdk-stretch-node-browsers-legacy
-    steps:
-      - checkout
-      - run: echo "A more familiar hi"
-      - attach_workspace:
-          at: .
-      - run: pwd
-      - run: ls -al
-      - run: echo "$(cat ~/project/src/main/resources/application.properties)!";
+      - image: openjdk:11.0.3
+    step:
+      - run:
+          name: just a test!!
+          command: |
+            echo "hello!!"
 workflows:
   version: 2
   one_and_two:
     jobs:
       - one
-      - two:
-          requires:
-            - one
