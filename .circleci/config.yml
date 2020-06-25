@@ -13,10 +13,30 @@ jobs:
     <<: *defaults
     steps:
       - run:
-          name: print message
-          command: echo "123456"
+          name: inject env var to config file
+          command: |
+            sed -i 's/PROTEST_APP_NAME/'${PROTEST_APP_NAME}'/g' ~/project/src/main/resources/application.properties
+            sed -i 's/PROTEST_APP_OWNER_NAME/'${PROTEST_APP_OWNER_NAME}'/g' ~/project/src/main/resources/application.properties
+            sed -i 's/PROTEST_APP_OWNER_AGE/'${PROTEST_APP_OWNER_AGE}'/g' ~/project/src/main/resources/application.properties
+            sed -i 's/PROTEST_APP_OWNER_CODENAME/'${PROTEST_APP_OWNER_CODENAME}'/g' ~/project/src/main/resources/application.properties
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+  print:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: print config file
+          command: echo "$(cat ~/project/src/main/resources/application.properties)!"
+
 workflows:
   version: 2
   haha:
     jobs:
       - setup
+      - print:
+        requires:
+          - setup
