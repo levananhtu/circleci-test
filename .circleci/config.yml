@@ -12,7 +12,9 @@ jobs:
   setup:
     <<: *defaults
     steps:
-      - run: echo 123456
+      - run:
+          - name: print message
+          - command: echo "123456"
 workflows:
   version: 2
   haha:
