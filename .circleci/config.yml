@@ -12,6 +12,6 @@ jobs:
             echo "hello!!"
 workflows:
   version: 2
-  one_and_two:
+  setup:
     jobs:
-      - one
+      - setup
