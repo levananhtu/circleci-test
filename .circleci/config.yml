@@ -39,5 +39,5 @@ workflows:
     jobs:
       - setup
       - print:
-        requires:
-          - setup
+          requires:
+            - setup
