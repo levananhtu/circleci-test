@@ -50,4 +50,7 @@ workflows:
             - one
   three:
     jobs:
-      - three
+      - one
+      - two:
+          requires:
+            - one
