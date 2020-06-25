@@ -18,6 +18,8 @@ jobs:
       - checkout
       - run: echo "A more famillar hi"
       - run: mkdir lvat02
+      - run: ls -al
+      - run: pwd
       - run: sleep 15
 workflows:
   version: 2
