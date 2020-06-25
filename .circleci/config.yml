@@ -3,10 +3,8 @@ defaults: &defaults
     - image: circleci/openjdk:11.0.3-jdk-stretch-node-browsers-legacy
   working_directory: ~
   environment:
-    PROTEST_APP_NAME: "CIRCLECI_TEST"
-    PROTEST_APP_OWNER_NAME: "LEVANANHTU"
-    PROTEST_APP_OWNER_AGE: "22"
-    PROTEST_APP_OWNER_CODENAME: "LVAT"
+    PROTEST_SPRING_DATASOURCE_USERNAME: "LVAT"
+    PROTEST_SPRING_DATASOURCE_PASSWORD: "123456"
 version: 2
 jobs:
   setup:
@@ -16,10 +14,8 @@ jobs:
       - run:
           name: inject env var to config file
           command: |
-            sed -i 's/PROTEST_APP_NAME/'${PROTEST_APP_NAME}'/g' ~/project/src/main/resources/application.properties
-            sed -i 's/PROTEST_APP_OWNER_NAME/'${PROTEST_APP_OWNER_NAME}'/g' ~/project/src/main/resources/application.properties
-            sed -i 's/PROTEST_APP_OWNER_AGE/'${PROTEST_APP_OWNER_AGE}'/g' ~/project/src/main/resources/application.properties
-            sed -i 's/PROTEST_APP_OWNER_CODENAME/'${PROTEST_APP_OWNER_CODENAME}'/g' ~/project/src/main/resources/application.properties
+            sed -i 's/PROTEST_SPRING_DATASOURCE_USERNAME/'${PROTEST_SPRING_DATASOURCE_USERNAME}'/g' ~/project/src/main/resources/application.properties
+            sed -i 's/PROTEST_SPRING_DATASOURCE_PASSWORD/'${PROTEST_SPRING_DATASOURCE_PASSWORD}'/g' ~/project/src/main/resources/application.properties
       - persist_to_workspace:
           root: .
           paths:
