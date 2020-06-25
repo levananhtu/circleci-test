@@ -28,7 +28,7 @@ jobs:
           at: .
       - run: pwd
       - run: ls -al
-      - run: echo "$(cat ~/project/application.properties)!";
+      - run: echo "$(cat ~/project/src/main/resources/application.properties)!";
 workflows:
   version: 2
   one_and_two:
