@@ -25,6 +25,6 @@ workflows:
     jobs:
       - one
       - two:
-          type: approval
           requires:
             - one
+          type: approval
