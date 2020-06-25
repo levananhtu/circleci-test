@@ -12,6 +12,7 @@ jobs:
   setup:
     <<: *defaults
     steps:
+      - checkout
       - run:
           name: inject env var to config file
           command: |
