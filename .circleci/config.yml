@@ -8,8 +8,7 @@ jobs:
     steps:
       - run:
           name: just a test!!
-          command: |
-            echo "hello!!"
+          command: echo "hello!!"
 workflows:
   version: 2
   setup:
