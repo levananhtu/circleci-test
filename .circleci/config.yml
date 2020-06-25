@@ -15,12 +15,24 @@ jobs:
     docker:
       - image: circleci/openjdk:11.0.3-jdk-stretch-node-browsers-legacy
     steps:
-      - checkout
-      - run: echo "A more famillar hi"
-      - run: mkdir lvat02
-      - run: ls -al
-      - run: pwd
-      - run: sleep 15
+      - run:
+          - name: Checkout
+          - command: checkout
+      - run:
+          - name: print some message
+          - command: echo "A more famillar hi"
+      - run:
+          - name: create lvat02 dir
+          - command: mkdir lvat02
+      - run:
+          - name: list all directory and file
+          - command: ls -al
+      - run:
+          - name: print current working directory
+          - command: pwd
+      - run:
+          - name: sleep for 15 seconds
+          - command: sleep 15
 workflows:
   version: 2
   one_and_two:
@@ -29,4 +41,3 @@ workflows:
       - two:
           requires:
             - one
-          type: approval
