@@ -49,6 +49,9 @@ jobs:
     steps:
       - attach_workspace:
           at: .
+      - run:
+          name: run maven test
+          command: mvn test
   print:
     <<: *defaults
     steps:
@@ -63,6 +66,9 @@ workflows:
   haha:
     jobs:
       - setup
+      - test:
+          requires:
+            - setup
       - print:
           requires:
             - setup
