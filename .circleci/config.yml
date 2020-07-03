@@ -19,6 +19,9 @@ jobs:
       - run:
           name: test mvn
           command: mvn --version
+      - run:
+          name: test checksum
+          command: checksum "pom.xml"
       - persist_to_workspace:
           root: .
           paths:
