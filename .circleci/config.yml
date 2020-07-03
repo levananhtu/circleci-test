@@ -17,6 +17,9 @@ jobs:
             - circleci-test-{{ .Branch }}
             - circleci-test
       - run:
+          name: print maven folder
+          command: ls ~/.m2
+      - run:
           name: inject env var to config file
           command: |
             sed -i 's/PROTEST_SPRING_DATASOURCE_USERNAME/'${PROTEST_SPRING_DATASOURCE_USERNAME}'/g' ~/project/src/main/resources/application.properties
@@ -30,6 +33,9 @@ jobs:
       - run:
           name: print target folder
           command: ls target/
+      - run:
+          name: print maven folder again
+          command: ls ~/.m2
       - save_cache:
           paths:
             - ~/.m2
@@ -38,6 +44,12 @@ jobs:
           root: .
           paths:
             - .
+  test:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: .
+      -
   print:
     <<: *defaults
     steps:
