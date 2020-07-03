@@ -20,6 +20,25 @@ jobs:
           root: .
           paths:
             - .
+
+  build:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: .
+      - restore_cache:
+          keys:
+            - circleci-test-{{ .Branch }}-{{ checksum "pom.xml" }}
+            - circleci-test-{{ .Branch }}
+            - circleci-test
+      - run:
+          name: build
+          command: mvn install -Dmaven.test.skip=true
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: circleci-test-{{ .Branch }}-{{ checksum "pom.xml" }}
+
   test:
     <<: *defaults
     steps:
@@ -32,34 +51,26 @@ jobs:
             - circleci-test-{{ .Branch }}
             - circleci-test
       - run:
-          name: build and test
-          command: mvn install
+          name: test
+          command: mvn test
       - save_cache:
           paths:
             - ~/.m2
           key: circleci-test-{{ .Branch }}-{{ checksum "pom.xml" }}
-  print:
+
+  deploy:
     <<: *defaults
     steps:
       - attach_workspace:
           at: .
-      - run:
-          name: print config file
-          command: echo "$(cat ~/project/src/main/resources/application.properties)!"
-      - persist_to_workspace:
-          root: .
-          paths:
-            - .
-
-
 workflows:
   version: 2
   haha:
     jobs:
       - setup
+      - build:
+          requires:
+            - setup
       - test:
           requires:
-            - setup
-      - print:
-          requires:
-            - setup
+            - build
