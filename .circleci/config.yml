@@ -49,7 +49,6 @@ jobs:
     steps:
       - attach_workspace:
           at: .
-      -
   print:
     <<: *defaults
     steps:
