@@ -86,6 +86,7 @@ workflows:
           type: approval
           requires:
             - test
+            - build
       - pre_deploy_setup:
           requires:
             - approve
