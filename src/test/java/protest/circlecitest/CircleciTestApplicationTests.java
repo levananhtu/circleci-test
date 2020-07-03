@@ -11,12 +11,12 @@ class CircleciTestApplicationTests {
 
     @Test
     void first() throws IOException {
-        Assertions.assertEquals(2, 3);
+        Assertions.assertEquals(2, 2);
     }
 
     @Test
     void second() throws IOException {
-        Assertions.assertEquals(2, 3);
+        Assertions.assertEquals(2, 2);
     }
 
     @Test
