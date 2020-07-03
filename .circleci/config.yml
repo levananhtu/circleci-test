@@ -18,7 +18,7 @@ jobs:
             - circleci-test
       - run:
           name: print maven folder
-          command: ls ~/.m2
+          command: ls ~/.m2/repository/ -al
       - run:
           name: inject env var to config file
           command: |
@@ -35,7 +35,7 @@ jobs:
           command: ls target/
       - run:
           name: print maven folder again
-          command: ls ~/.m2
+          command: ls ~/.m2/repository/ -al
       - save_cache:
           paths:
             - ~/.m2
