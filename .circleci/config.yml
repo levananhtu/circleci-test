@@ -23,7 +23,7 @@ jobs:
 
   build:
     <<: *defaults
-    steps1:
+    steps:
       - attach_workspace:
           at: .
       - restore_cache:
