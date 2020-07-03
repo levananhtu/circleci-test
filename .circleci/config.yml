@@ -13,9 +13,9 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - gem-cache-v1-{{ arch }}-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
-            - gem-cache-v1-{{ arch }}-{{ .Branch }}
-            - gem-cache-v1
+            - circleci-test-{{ .Branch }}-{{ checksum "pom.xml" }}
+            - circleci-test-{{ .Branch }}
+            - circleci-test
       - run:
           name: inject env var to config file
           command: |
