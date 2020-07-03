@@ -50,8 +50,14 @@ jobs:
       - attach_workspace:
           at: .
       - run:
+          name: print maven folder
+          command: ls ~/.m2/repository/ -al
+      - run:
           name: run maven test
           command: mvn test
+      - run:
+          name: print maven folder again
+          command: ls ~/.m2/repository/ -al
   print:
     <<: *defaults
     steps:
@@ -60,15 +66,20 @@ jobs:
       - run:
           name: print config file
           command: echo "$(cat ~/project/src/main/resources/application.properties)!"
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
 
 workflows:
   version: 2
   haha:
     jobs:
-      - setup
+#      - setup
       - test:
           requires:
-            - setup
+#            - setup
       - print:
           requires:
-            - setup
+#            - setup
