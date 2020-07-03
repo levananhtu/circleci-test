@@ -7,7 +7,7 @@ defaults: &defaults
     PROTEST_SPRING_DATASOURCE_PASSWORD: "123456"
 version: 2
 jobs:
-  setup:
+  pre_build_setup:
     <<: *defaults
     steps:
       - checkout
@@ -23,7 +23,7 @@ jobs:
 
   build:
     <<: *defaults
-    steps:
+    steps1:
       - attach_workspace:
           at: .
       - restore_cache:
@@ -58,21 +58,30 @@ jobs:
             - ~/.m2
           key: circleci-test-{{ .Branch }}-{{ checksum "pom.xml" }}
 
-  deploy:
+  pre_deploy_setup:
     <<: *defaults
     steps:
       - attach_workspace:
           at: .
-
+      - run:
+          name: install google cloud sdk
+          command: lsb_release -a
 
 workflows:
   version: 2
   haha:
     jobs:
-      - setup
+      - pre_build_setup
       - build:
           requires:
-            - setup
+            - pre_build_setup
       - test:
           requires:
             - build
+      - approve:
+          type: approval
+          requires:
+            - test
+      - pre_deploy_setup:
+          requres:
+            - approve
