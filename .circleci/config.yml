@@ -56,10 +56,10 @@ workflows:
   version: 2
   haha:
     jobs:
-      #      - setup
+      - setup
       - test:
           requires:
-      #            - setup
+            - setup
       - print:
           requires:
-#            - setup
+            - setup
