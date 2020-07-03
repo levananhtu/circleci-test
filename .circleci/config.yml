@@ -18,7 +18,7 @@ jobs:
             sed -i 's/PROTEST_SPRING_DATASOURCE_PASSWORD/'${PROTEST_SPRING_DATASOURCE_PASSWORD}'/g' ~/project/src/main/resources/application.properties
       - run:
           name: test mvn
-          command: mvn
+          command: mvn --version
       - persist_to_workspace:
           root: .
           paths:
