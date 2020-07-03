@@ -11,6 +11,11 @@ jobs:
     <<: *defaults
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            - gem-cache-v1-{{ arch }}-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
+            - gem-cache-v1-{{ arch }}-{{ .Branch }}
+            - gem-cache-v1
       - run:
           name: inject env var to config file
           command: |
@@ -20,8 +25,15 @@ jobs:
           name: test mvn
           command: mvn --version
       - run:
-          name: test checksum
-          command: checksum "pom.xml"
+          name: build
+          command: mvn install
+      - run:
+          name: print target folder
+          command: ls target/
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: circleci-test-{{ .Branch }}-{{ checksum "pom.xml" }}
       - persist_to_workspace:
           root: .
           paths:
