@@ -11,32 +11,11 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - circleci-test-{{ .Branch }}-{{ checksum "pom.xml" }}
-            - circleci-test-{{ .Branch }}
-            - circleci-test
       - run:
           name: inject env var to config file
           command: |
             sed -i 's/PROTEST_SPRING_DATASOURCE_USERNAME/'${PROTEST_SPRING_DATASOURCE_USERNAME}'/g' ~/project/src/main/resources/application.properties
             sed -i 's/PROTEST_SPRING_DATASOURCE_PASSWORD/'${PROTEST_SPRING_DATASOURCE_PASSWORD}'/g' ~/project/src/main/resources/application.properties
-      - run:
-          name: test mvn
-          command: mvn --version
-      - run:
-          name: build
-          command: mvn install
-      - run:
-          name: print target folder
-          command: ls target/
-      - run:
-          name: print maven folder again
-          command: ls ~/.m2/repository/ -al
-      - save_cache:
-          paths:
-            - ~/.m2
-          key: circleci-test-{{ .Branch }}-{{ checksum "pom.xml" }}
       - persist_to_workspace:
           root: .
           paths:
@@ -47,12 +26,18 @@ jobs:
       - checkout
       - attach_workspace:
           at: .
+      - restore_cache:
+          keys:
+            - circleci-test-{{ .Branch }}-{{ checksum "pom.xml" }}
+            - circleci-test-{{ .Branch }}
+            - circleci-test
       - run:
-          name: run maven test
-          command: mvn test
-      - run:
-          name: print maven folder
-          command: ls ~/.m2/repository/ -al
+          name: build and test
+          command: mvn install
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: circleci-test-{{ .Branch }}-{{ checksum "pom.xml" }}
   print:
     <<: *defaults
     steps:
@@ -71,10 +56,10 @@ workflows:
   version: 2
   haha:
     jobs:
-#      - setup
+      #      - setup
       - test:
           requires:
-#            - setup
+      #            - setup
       - print:
           requires:
 #            - setup
