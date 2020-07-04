@@ -16,6 +16,11 @@ jobs:
           command: |
             cat /etc/os-release
       - run:
+          name: install maven
+          command: |
+            apt update
+            apt install maven
+      - run:
           name: inject env var to config file
           command: |
             sed -i 's/PROTEST_SPRING_DATASOURCE_USERNAME/'${PROTEST_SPRING_DATASOURCE_USERNAME}'/g' ~/project/src/main/resources/application.properties
