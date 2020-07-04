@@ -19,7 +19,7 @@ jobs:
           name: install maven
           command: |
             apt update
-            apt install maven
+            apt install -y maven
       - run:
           name: inject env var to config file
           command: |
