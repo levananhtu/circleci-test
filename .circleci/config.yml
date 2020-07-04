@@ -1,6 +1,6 @@
 defaults: &defaults
   docker:
-    - image: adoptopenjdk:11.0.3_7-jre-hotspot-bionic
+    - image: circleci/openjdk:11.0.3-jdk-stretch-node-browsers-legacy
   working_directory: ~
   environment:
     PROTEST_SPRING_DATASOURCE_USERNAME: "LVAT"
@@ -15,11 +15,6 @@ jobs:
           name: check for version
           command: |
             cat /etc/os-release
-      - run:
-          name: install maven
-          command: |
-            apt update
-            apt install -y maven
       - run:
           name: inject env var to config file
           command: |
@@ -95,7 +90,6 @@ workflows:
           type: approval
           requires:
             - test
-            - build
       - pre_deploy_setup:
           requires:
             - approve_deploy
