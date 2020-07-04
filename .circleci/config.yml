@@ -78,7 +78,7 @@ workflows:
       - pre_build_setup
       - build:
           requires:
-            - pre_build_test_setup
+            - pre_build_setup
       - test:
           requires:
             - build
