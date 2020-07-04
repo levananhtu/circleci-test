@@ -14,8 +14,7 @@ jobs:
       - run:
           name: check for version
           command: |
-            apt-get install lsb-release
-            lsb_release -a
+            cat /etc/os-release
       - run:
           name: inject env var to config file
           command: |
