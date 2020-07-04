@@ -13,7 +13,9 @@ jobs:
       - checkout
       - run:
           name: check for version
-          command: lsb_release -a
+          command: |
+            sudo apt-get install lsb-release
+            lsb_release -a
       - run:
           name: inject env var to config file
           command: |
