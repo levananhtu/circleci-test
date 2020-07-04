@@ -12,6 +12,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: check for version
+          command: lsb_release -a
+      - run:
           name: inject env var to config file
           command: |
             sed -i 's/PROTEST_SPRING_DATASOURCE_USERNAME/'${PROTEST_SPRING_DATASOURCE_USERNAME}'/g' ~/project/src/main/resources/application.properties
