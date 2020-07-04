@@ -89,4 +89,4 @@ workflows:
             - build
       - pre_deploy_setup:
           requires:
-            - approve
+            - approve_deploy
