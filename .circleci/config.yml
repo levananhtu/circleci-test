@@ -76,12 +76,9 @@ jobs:
             - circleci-test-{{ .Branch }}-{{ checksum "pom.xml" }}
             - circleci-test-{{ .Branch }}
             - circleci-test
-      - run:
-          name: install google cloud sdk
-          command: |
-            echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
-            curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
-            sudo apt-get update && sudo apt-get install google-cloud-sdk
+      - run: echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+      - run: curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
+      - run: sudo apt-get update && sudo apt-get install google-cloud-sdk
       - run:
           name: check sdk version
           command: gcloud --version
