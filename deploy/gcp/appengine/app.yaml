@@ -1,0 +1,3 @@
+runtime: java
+env: flex
+service: circleci-java-protest-a01
