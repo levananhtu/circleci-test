@@ -96,7 +96,7 @@ jobs:
           command: mv ~/project/target/*.jar ~/project/deploy/gcp/appengine
       - run:
           name: deploy
-          command: gcloud app deploy
+          command: gcloud app -y deploy
 
 workflows:
   version: 2
