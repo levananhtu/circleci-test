@@ -71,6 +71,11 @@ jobs:
     steps:
       - attach_workspace:
           at: .
+      - restore_cache:
+          keys:
+            - circleci-test-{{ .Branch }}-{{ checksum "pom.xml" }}
+            - circleci-test-{{ .Branch }}
+            - circleci-test
       - run:
           name: install google cloud sdk
           command: |
@@ -81,6 +86,20 @@ jobs:
           name: check sdk version
           command: gcloud --version
       - run:
+          name:
+          command: |
+            echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
+            gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
+            gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
+      - run:
+          name: build
+          command: mvn install
+      - run:
+          name: move .jar file to deploy folder
+          command: mv ~/project/target/*.jar ~/project/deploy/gcp/appengine
+      - run:
+          name: deploy
+          command: gcloud app deploy
 
 workflows:
   version: 2

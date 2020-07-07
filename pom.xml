@@ -12,6 +12,7 @@
     <artifactId>circleci-test</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>circleci-test</name>
+    <packaging>jar</packaging>
     <description>Demo project for Spring Boot</description>
 
     <properties>
