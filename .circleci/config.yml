@@ -93,7 +93,11 @@ jobs:
           command: mvn install
       - run:
           name: move .jar file to deploy folder
-          command: mv ~/project/target/*.jar ~/project/deploy/gcp/appengine
+          command: mv ~/project/target/circleci-test.jar ~/project/deploy/gcp/appengine
+      - run:
+          name: change directory
+          command: cd ~/project/deploy/gcp/appengine
+      - run: pwd && ls -al
       - run:
           name: deploy
           command: gcloud app deploy
