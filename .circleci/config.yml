@@ -9,7 +9,8 @@ jobs:
     <<: *defaults
     steps:
       - run: curl https://downloads.tableau.com/esdalt/2018.1.0/tableau-tabcmd-2018-1-0_all.deb --output tableau-tabcmd-2018-1-0_all.deb
-      - run: apt-get install ./tableau-tabcmd-2018-1-0_all.deb
+      - run: sudo apt-get install ./tableau-tabcmd-2018-1-0_all.deb
+      - run: tabcmd version
       - run: pwd
       - run: ls -al
 
