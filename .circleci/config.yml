@@ -1,6 +1,9 @@
 defaults: &defaults
   docker:
-    - image: openjdk:11.0.3-jdk
+    - image: circleci/openjdk:11.0.3-jdk-stretch-node-browsers-legacy
+  #      auth:
+  #        username: _json_key  # default username when using a JSON key file to authenticate
+  #        password: $GCLOUD_SERVICE_KEY  # JSON service account you created, do not encode to base64
   working_directory: ~
   run: echo "123456789"
 version: 2
@@ -8,14 +11,118 @@ jobs:
   pre_build_setup:
     <<: *defaults
     steps:
-      - run: curl https://downloads.tableau.com/esdalt/2018.1.0/tableau-tabcmd-2018-1-0_all.deb --output tableau-tabcmd-2018-1-0_all.deb
-      - run: apt-get install ./tableau-tabcmd-2018-1-0_all.deb
-      - run: /opt/tableau/tabcmd/bin/tabcmd --accepteula version
-      - run: pwd
-      - run: ls -al
+      - checkout
+      - run: echo $JAVA_HOME
+      - run: java -version
+      - run:
+          name: check for version
+          command: |
+            cat /etc/os-release
+      - run:
+          name: inject env var to config file
+          command: |
+            sed -i 's/PROTEST_SPRING_DATASOURCE_USERNAME/'${PROTEST_SPRING_DATASOURCE_USERNAME}'/g' ~/project/src/main/resources/application.properties
+            sed -i 's/PROTEST_SPRING_DATASOURCE_PASSWORD/'${PROTEST_SPRING_DATASOURCE_PASSWORD}'/g' ~/project/src/main/resources/application.properties
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
+  build:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: .
+      - restore_cache:
+          keys:
+            - circleci-test-{{ .Branch }}-{{ checksum "pom.xml" }}
+            - circleci-test-{{ .Branch }}
+            - circleci-test
+      - run:
+          name: build
+          command: mvn install -Dmaven.test.skip=true
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: circleci-test-{{ .Branch }}-{{ checksum "pom.xml" }}
+
+  test:
+    <<: *defaults
+    steps:
+      - checkout
+      - attach_workspace:
+          at: .
+      - restore_cache:
+          keys:
+            - circleci-test-{{ .Branch }}-{{ checksum "pom.xml" }}
+            - circleci-test-{{ .Branch }}
+            - circleci-test
+      - run:
+          name: test
+          command: mvn test
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: circleci-test-{{ .Branch }}-{{ checksum "pom.xml" }}
+
+  deploy:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: .
+      - restore_cache:
+          keys:
+            - circleci-test-{{ .Branch }}-{{ checksum "pom.xml" }}
+            - circleci-test-{{ .Branch }}
+            - circleci-test
+      - run: echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+      - run: curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
+      - run: sudo rm -rf /var/lib/apt/lists/* && sudo apt update && sudo apt-get install google-cloud-sdk
+      - run:
+          name: check sdk version
+          command: gcloud --version
+      - run:
+          name:
+          command: |
+            echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
+            gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
+            gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
+      - run: mvn compile
+      - run: mvn -e -X appengine:deploy
+#      - run:
+#          name: build
+#          command: mvn install
+#      - run:
+#          name: move .jar file to deploy folder
+#          command: mv ~/project/target/circleci-test.jar ~/project/deploy/gcp/appengine
+#      - run:
+#          name: change directory
+#          command: cd ~/project/deploy/gcp/appengine
+#      - run: pwd && ls -al
+#      - run:
+#          name: deploy
+#          command: gcloud app deploy
+
 
 workflows:
   version: 2
   haha:
     jobs:
       - pre_build_setup
+      - build:
+          requires:
+            - pre_build_setup
+      - test:
+          requires:
+            - build
+      - approve_deploy:
+          type: approval
+          filters:
+            branches:
+              only:
+                - master
+          requires:
+            - test
+      - deploy:
+          requires:
+            - approve_deploy
