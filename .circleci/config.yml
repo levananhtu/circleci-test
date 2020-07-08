@@ -88,19 +88,21 @@ jobs:
             echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
             gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
             gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
-      - run:
-          name: build
-          command: mvn install
-      - run:
-          name: move .jar file to deploy folder
-          command: mv ~/project/target/circleci-test.jar ~/project/deploy/gcp/appengine
-      - run:
-          name: change directory
-          command: cd ~/project/deploy/gcp/appengine
-      - run: pwd && ls -al
-      - run:
-          name: deploy
-          command: gcloud app deploy
+      - run: mvn appengine:deploy
+#      - run:
+#          name: build
+#          command: mvn install
+#      - run:
+#          name: move .jar file to deploy folder
+#          command: mv ~/project/target/circleci-test.jar ~/project/deploy/gcp/appengine
+#      - run:
+#          name: change directory
+#          command: cd ~/project/deploy/gcp/appengine
+#      - run: pwd && ls -al
+#      - run:
+#          name: deploy
+#          command: gcloud app deploy
+
 
 workflows:
   version: 2
