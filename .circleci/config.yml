@@ -6,9 +6,6 @@ defaults: &defaults
   #        password: $GCLOUD_SERVICE_KEY  # JSON service account you created, do not encode to base64
   working_directory: ~
   run: echo "123456789"
-  environment:
-    PROTEST_SPRING_DATASOURCE_USERNAME: "LVAT"
-    PROTEST_SPRING_DATASOURCE_PASSWORD: "123456"
 version: 2
 jobs:
   pre_build_setup:

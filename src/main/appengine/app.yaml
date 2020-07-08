@@ -1,4 +1,4 @@
-#env: flex
+env: standard
 runtime: java11
 service: circleci-java-protest-a01
 
