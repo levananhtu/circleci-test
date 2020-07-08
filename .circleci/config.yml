@@ -16,6 +16,7 @@ jobs:
     steps:
       - checkout
       - run: echo $JAVA_HOME
+      - run: java -version
       - run:
           name: check for version
           command: |
