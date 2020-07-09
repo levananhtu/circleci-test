@@ -59,6 +59,7 @@ jobs:
             - circleci-test-{{ .Branch }}-{{ checksum "pom.xml" }}
             - circleci-test-{{ .Branch }}
             - circleci-test
+      - run: echo "$(cat ~/project/src/main/resources/application.properties)!";
       - run:
           name: test
           command: mvn test
