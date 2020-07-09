@@ -23,6 +23,8 @@ jobs:
           command: |
             sed -i 's/PROTEST_SPRING_DATASOURCE_USERNAME/'${PROTEST_SPRING_DATASOURCE_USERNAME}'/g' ~/project/src/main/resources/application.properties
             sed -i 's/PROTEST_SPRING_DATASOURCE_PASSWORD/'${PROTEST_SPRING_DATASOURCE_PASSWORD}'/g' ~/project/src/main/resources/application.properties
+            sed -i 's/PROTEST_SPRING_GCP_SQL_DATABASE_NAME/'${PROTEST_SPRING_GCP_SQL_DATABASE_NAME}'/g' ~/project/src/main/resources/application.properties
+            sed -i 's/PROTEST_SPRING_GCP_SQL_INSTANCE_CONNECTION_NAME/'${PROTEST_SPRING_GCP_SQL_INSTANCE_CONNECTION_NAME}'/g' ~/project/src/main/resources/application.properties
       - persist_to_workspace:
           root: .
           paths:
