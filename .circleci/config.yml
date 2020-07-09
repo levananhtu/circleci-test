@@ -115,9 +115,9 @@ workflows:
       - build:
           requires:
             - pre_build_setup
-      - test:
-          requires:
-            - build
+#      - test:
+#          requires:
+#            - build
       - approve_deploy:
           type: approval
           filters:
@@ -125,7 +125,7 @@ workflows:
               only:
                 - master
           requires:
-            - test
+            - build
       - deploy:
           requires:
             - approve_deploy
