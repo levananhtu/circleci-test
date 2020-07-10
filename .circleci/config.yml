@@ -15,9 +15,8 @@ jobs:
       - checkout
       - run: echo $JAVA_HOME
       - run: java -version
-      - run: python -version
       - run:
-          name: check for version
+          name: check for os version
           command: |
             cat /etc/os-release
       - run:
