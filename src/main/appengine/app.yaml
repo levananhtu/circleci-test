@@ -4,3 +4,9 @@ service: circleci-java-protest-a01
 handlers:
   - url: /.*
     script: this field is required, but ignored
+
+steps:
+  - name: 'gcr.io/cloud-builders/mvn'
+    args: ['install']
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: ['app', 'deploy']

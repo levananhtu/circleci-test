@@ -13,6 +13,6 @@ public class ActorService {
     }
 
     public Actor findActorById(Short id) {
-        return actorRepository.findById(id).orElseThrow();
+        return actorRepository.findById(id).orElseThrow(NullPointerException::new);
     }
 }

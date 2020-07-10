@@ -1,6 +1,7 @@
 defaults: &defaults
   docker:
-    - image: circleci/openjdk:11.0.3-jdk-stretch-node-browsers-legacy
+    - image: circleci/openjdk:11.0.3-stretch-node-browsers
+    - image: circleci/python:3.6.4-stretch-node-browsers
   #      auth:
   #        username: _json_key  # default username when using a JSON key file to authenticate
   #        password: $GCLOUD_SERVICE_KEY  # JSON service account you created, do not encode to base64
@@ -14,6 +15,7 @@ jobs:
       - checkout
       - run: echo $JAVA_HOME
       - run: java -version
+      - run: python -version
       - run:
           name: check for version
           command: |
@@ -115,9 +117,9 @@ workflows:
       - build:
           requires:
             - pre_build_setup
-#      - test:
-#          requires:
-#            - build
+      #      - test:
+      #          requires:
+      #            - build
       - approve_deploy:
           type: approval
           filters:
