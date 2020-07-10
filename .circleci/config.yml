@@ -1,7 +1,7 @@
 defaults: &defaults
   docker:
     - image: circleci/openjdk:11.0.3-stretch-node-browsers
-    - image: circleci/python:3.6.4-stretch-node-browsers
+  #    - image: circleci/python:3.6.4-stretch-node-browsers
   #      auth:
   #        username: _json_key  # default username when using a JSON key file to authenticate
   #        password: $GCLOUD_SERVICE_KEY  # JSON service account you created, do not encode to base64
@@ -27,6 +27,7 @@ jobs:
             sed -i 's/PROTEST_SPRING_DATASOURCE_PASSWORD/'${PROTEST_SPRING_DATASOURCE_PASSWORD}'/g' ~/project/src/main/resources/application.properties
             sed -i 's/PROTEST_SPRING_GCP_SQL_DATABASE_NAME/'${PROTEST_SPRING_GCP_SQL_DATABASE_NAME}'/g' ~/project/src/main/resources/application.properties
             sed -i 's/PROTEST_SPRING_GCP_SQL_INSTANCE_CONNECTION_NAME/'${PROTEST_SPRING_GCP_SQL_INSTANCE_CONNECTION_NAME}'/g' ~/project/src/main/resources/application.properties
+      - run: pwd
       - persist_to_workspace:
           root: .
           paths:
@@ -117,9 +118,9 @@ workflows:
       - build:
           requires:
             - pre_build_setup
-      #      - test:
-      #          requires:
-      #            - build
+      - test:
+          requires:
+            - build
       - approve_deploy:
           type: approval
           filters:
