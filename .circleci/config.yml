@@ -30,6 +30,11 @@ jobs:
             sed -i 's/PROTEST_SPRING_GCP_SQL_INSTANCE_CONNECTION_NAME/'${PROTEST_SPRING_GCP_SQL_INSTANCE_CONNECTION_NAME}'/g' ~/project/src/main/resources/application.properties
       - run: pwd
       - run: ls
+      - run: mkdir /app
+      - run: wget -O /app/OpenJDK11U-jdk_x64_linux_hotspot_11.0.4_11.tar.gz https://github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11.0.4%2B11/OpenJDK11U-jdk_x64_linux_hotspot_11.0.4_11.tar.gz
+      - run: tar xzvf /app/OpenJDK11U-jdk_x64_linux_hotspot_11.0.4_11.tar.gz
+      - run: rm /app/OpenJDK11U-jdk_x64_linux_hotspot_11.0.4_11.tar.gz
+      - run: /app/jdk-11.0.3+7/bin/java - version
       - persist_to_workspace:
           root: .
           paths:
