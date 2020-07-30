@@ -1,7 +1,7 @@
 defaults: &defaults
   docker:
-    - image: openjdk:8u242-jdk-stretch
-#    - image: openjdk:11.0.3-jdk
+#    - image: openjdk:8u242-jdk-stretch
+    - image: openjdk:11.0.3-jdk
 #    - image: circleci/openjdk:11.0.3-stretch-node-browsers
   #    - image: circleci/python:3.6.4-stretch-node-browsers
   #      auth:
@@ -108,20 +108,20 @@ workflows:
   haha:
     jobs:
       - pre_build_setup
-      - build:
-          requires:
-            - pre_build_setup
-      - test:
-          requires:
-            - build
-      - approve_deploy:
-          type: approval
-          filters:
-            branches:
-              only:
-                - master
-          requires:
-            - test
-      - deploy:
-          requires:
-            - approve_deploy
+#      - build:
+#          requires:
+#            - pre_build_setup
+#      - test:
+#          requires:
+#            - build
+#      - approve_deploy:
+#          type: approval
+#          filters:
+#            branches:
+#              only:
+#                - master
+#          requires:
+#            - test
+#      - deploy:
+#          requires:
+#            - approve_deploy
