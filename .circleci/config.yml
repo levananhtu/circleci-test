@@ -50,6 +50,7 @@ jobs:
             - circleci-test
       - run: ls
       - run: pwd
+      - run: apt-get install sudo
       - run:
           name: build
           command: ./mvnw install -Dmaven.test.skip=true
