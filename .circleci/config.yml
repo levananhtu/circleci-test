@@ -49,6 +49,7 @@ jobs:
             - circleci-test-{{ .Branch }}
             - circleci-test
       - run: ls
+      - run: pwd
       - run:
           name: build
           command: ./mvnw install -Dmaven.test.skip=true
