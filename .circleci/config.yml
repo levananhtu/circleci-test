@@ -50,11 +50,10 @@ jobs:
             - circleci-test
       - run: ls -al
       - run: pwd
-      - run: apt-get update
-      - run: apt-get install sudo
+      - run: chmod 754 ./mvnw
       - run:
           name: build
-          command: sudo ./mvnw install -Dmaven.test.skip=true
+          command: ./mvnw install -Dmaven.test.skip=true
       - run: ls -al
       - save_cache:
           paths:
