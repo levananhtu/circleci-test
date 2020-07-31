@@ -48,14 +48,14 @@ jobs:
             - circleci-test-{{ .Branch }}-{{ checksum "pom.xml" }}
             - circleci-test-{{ .Branch }}
             - circleci-test
-      - run: ls
+      - run: ls -al
       - run: pwd
       - run: apt-get update
       - run: apt-get install sudo
       - run:
           name: build
           command: sudo ./mvnw install -Dmaven.test.skip=true
-      - run: ls
+      - run: ls -al
       - save_cache:
           paths:
             - ~/.m2
