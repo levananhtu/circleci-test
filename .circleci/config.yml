@@ -48,10 +48,10 @@ jobs:
             - circleci-test-{{ .Branch }}-{{ checksum "pom.xml" }}
             - circleci-test-{{ .Branch }}
             - circleci-test
+      - run: ls
       - run:
           name: build
           command: ./mvnw install -Dmaven.test.skip=true
-      - run: ls
       - save_cache:
           paths:
             - ~/.m2
