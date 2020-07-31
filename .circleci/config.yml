@@ -107,12 +107,12 @@ workflows:
   haha:
     jobs:
       - pre_build_setup
-#      - build:
-#          requires:
-#            - pre_build_setup
-#      - test:
-#          requires:
-#            - build
+      - build:
+          requires:
+            - pre_build_setup
+      - test:
+          requires:
+            - build
 #      - approve_deploy:
 #          type: approval
 #          filters:
