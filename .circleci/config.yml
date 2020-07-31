@@ -54,7 +54,8 @@ jobs:
       - run: apt-get install sudo
       - run:
           name: build
-          command: ./mvnw install -Dmaven.test.skip=true
+          command: sudo ./mvnw install -Dmaven.test.skip=true
+      - run: ls
       - save_cache:
           paths:
             - ~/.m2
